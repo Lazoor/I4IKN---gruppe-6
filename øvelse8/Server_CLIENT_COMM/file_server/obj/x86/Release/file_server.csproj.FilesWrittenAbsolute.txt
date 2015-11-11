@@ -1,0 +1,4 @@
+/root/Server_CLIENT_COMM/file_server/obj/x86/Release/.NETFramework,Version=v4.0.AssemblyAttribute.cs
+/root/Server_CLIENT_COMM/file_server/bin/Release/file_server.exe
+/root/Server_CLIENT_COMM/file_server/obj/x86/Release/file_server.exe
+/root/Server_CLIENT_COMM/file_server/bin/Release/LIB.dll

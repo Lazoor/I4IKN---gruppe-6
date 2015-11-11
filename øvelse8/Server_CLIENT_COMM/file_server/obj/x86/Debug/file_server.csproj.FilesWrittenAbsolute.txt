@@ -1,0 +1,7 @@
+/root/Server_CLIENT_COMM/file_server/obj/x86/Debug/.NETFramework,Version=v4.0.AssemblyAttribute.cs
+/root/Server_CLIENT_COMM/file_server/bin/Debug/file_server.exe.mdb
+/root/Server_CLIENT_COMM/file_server/bin/Debug/file_server.exe
+/root/Server_CLIENT_COMM/file_server/obj/x86/Debug/file_server.exe
+/root/Server_CLIENT_COMM/file_server/obj/x86/Debug/file_server.exe.mdb
+/root/Server_CLIENT_COMM/file_server/bin/Debug/LIB.dll
+/root/Server_CLIENT_COMM/file_server/bin/Debug/LIB.dll.mdb
