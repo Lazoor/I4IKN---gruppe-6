@@ -1,0 +1,5 @@
+/root/i4ikn/I4IKN---gruppe-6/øvelse13/øvelse13/Link/obj/Debug/.NETFramework,Version=v4.0.AssemblyAttribute.cs
+/root/i4ikn/I4IKN---gruppe-6/øvelse13/øvelse13/Link/bin/Debug/Link.dll.mdb
+/root/i4ikn/I4IKN---gruppe-6/øvelse13/øvelse13/Link/bin/Debug/Link.dll
+/root/i4ikn/I4IKN---gruppe-6/øvelse13/øvelse13/Link/obj/Debug/Link.dll
+/root/i4ikn/I4IKN---gruppe-6/øvelse13/øvelse13/Link/obj/Debug/Link.dll.mdb
