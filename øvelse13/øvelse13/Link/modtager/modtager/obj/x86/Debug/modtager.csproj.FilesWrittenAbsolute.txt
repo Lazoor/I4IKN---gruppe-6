@@ -1,0 +1,5 @@
+/home/ikn/exercise13/Link/modtager/obj/x86/Debug/.NETFramework,Version=v4.0.AssemblyAttribute.cs
+/home/ikn/exercise13/Link/modtager/bin/Debug/modtager.exe.mdb
+/home/ikn/exercise13/Link/modtager/bin/Debug/modtager.exe
+/home/ikn/exercise13/Link/modtager/obj/x86/Debug/modtager.exe
+/home/ikn/exercise13/Link/modtager/obj/x86/Debug/modtager.exe.mdb
