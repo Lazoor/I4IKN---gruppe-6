@@ -23,32 +23,36 @@ namespace Linklaget
 			buffer = new byte[(MAXFILESIZE*2)+2];
 		}
 
-		/*		public void send (byte[] buf, int size)
+		public void send (byte[] inputbuf, int size)
 		{
-			byte[] temp = new byte[10001];
-			int tempCount = 0;
+			int tempCount = 1;
 
 			for (int i=0; i < size; ++i) {
-				if (i > 0 && i < size) {
-					if (buf [i] == (byte)'A') {
-						temp [tempCount] = (byte)'B';
-						temp [tempCount + 1] = (byte)'C';
-					} else if (buf [i] == (byte)'B') {
-						temp [tempCount] = (byte)'B';
-						temp [tempCount + 1] = (byte)'D';
-					} else {
-						temp [tempCount] = buf [i];
-					}
+				if (inputbuf [i] == (byte)'A') {
+					buffer [tempCount] = (byte)'B';
+					buffer [tempCount+1] = (byte)'C';
+					tempCount += 2;
+				} else if (inputbuf [i] == (byte)'B') {
+					buffer [tempCount] = (byte)'B';
+					buffer [tempCount+1] = (byte)'D';
+					tempCount += 2;
 				} else {
-					temp [tempCount] = DELIMITER;
-				}
-				++tempCount;
+					buffer [tempCount] = inputbuf [i];
+					tempCount++;
+				} 
 			}
-			temp [tempCount] = (byte)'\n';
-			serialPort.Write (temp, 0, tempCount);
-		}
-		*/
+			buffer [0] = DELIMITER;
+			tempCount++;
+			buffer [tempCount] = DELIMITER;
 
+			//#####################################################
+			tempCount++;
+			buffer [tempCount+1] = (byte)'\r';	// DEBUGGING REASONS TO READ ON TTYS1
+			//#######################################################
+			serialPort.Write (Encoding.ASCII.GetString(buffer, 0, tempCount));
+		}
+
+		/*
 		public void send (byte[] buf, int size)
 		{
 			//Incrementing bufSize because of wrapping
@@ -128,7 +132,7 @@ namespace Linklaget
 			serialPort.Write(Encoding.ASCII.GetString(sendBuffer,0, bufSize+1));
 			//	// Jeppes kode
 		}
-	
+		*/
 		public int receive (ref byte[] buf)
 		{
 			bool wait = false;
