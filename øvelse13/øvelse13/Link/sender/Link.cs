@@ -44,73 +44,45 @@ namespace Linklaget
 			buffer [0] = DELIMITER;
 			tempCount++;
 			buffer [tempCount] = DELIMITER;
-
-			//#####################################################
 			tempCount++;
-			buffer [tempCount+1] = (byte)'\r';	// DEBUGGING REASONS TO READ ON TTYS1
+			//#####################################################
+
+			//buffer [tempCount+1] = (byte)'\r';	// DEBUGGING REASONS TO READ ON TTYS1
 			//#######################################################
-			serialPort.Write (Encoding.ASCII.GetString(buffer, 0, tempCount));
+
+			serialPort.Write (buffer, 0, tempCount);
 		}
 
 
 		public int receive (ref byte[] buf)
 		{
-			bool wait = false;
 			// Total size counter
 			int bufReadSize = 0;
 			// i = temporary buffer iterator, bufCount = buf iterator
 			int i = 0, bufCount = 0;
-			byte[] temp = new byte[100000];
 
 			// ################  DEBUG  OUTCOMMENT IF NEEDED ##############
 			Console.WriteLine ("Receive function started...");
 			//#############################################################
 
+			bufReadSize = serialPort.Read (buffer,i,MAXFILESIZE);
+			Console.WriteLine ("Buffer received (nothing done to it): " + Encoding.ASCII.GetString (buffer));
 
-
-			// Receive while-loop
-			while (wait != true) {								
-				// serialPort.Read(buffer, offset, maxSizeRead)
-				bufReadSize += serialPort.Read(temp,i,1); 
-
-				// ################  DEBUG  OUTCOMMENT IF NEEDED ##############
-				//Console.WriteLine ("Reading directly from link-layer:\n");
-				Console.WriteLine (temp[i]);
-				//#############################################################
-
-				// If not buf[0] == 'A' -> exit
-				if (temp [0] != DELIMITER) {					
-					Console.Error.WriteLine ("Forkert frame....!");
-					return 1;
-				} 
-				// If buf[i] == 'A' -> reading done...
-				if ((i > 0) && (buf [i] == DELIMITER)) {			
-					Console.WriteLine ("Reading done...");
-					// exit while.
-					wait = true;	
-				} else if (i > MAXFILESIZE){
-					// Timed out.
-					return 2;									
-				}
-				// Incrementing for each byte read.
-				i++;											
-			}
-
-			for (int j = 0; j < bufReadSize; ++j) {
-				if (j > 0 && j < bufReadSize) {
-					if (temp [j] == 'B' && temp [j+1] == 'C') {	// Replace 'BC' with 'A'
+			for (int j = 1; j < bufReadSize-1; ++j) {			// Compressing readBuf to actual size buf
+				if (j < bufReadSize) {
+					if (buffer [j] == 'B' && buffer [j+1] == 'C') {	// Replace 'BC' with 'A'
 						buf [bufCount] = (byte)'A';
-						++j;
-					} else if (temp [j] == 'B' && temp [j+1] == 'D') { // Replace 'BD' with 'B'
+						j++;
+					} else if (buffer [j] == 'B' && buffer [j+1] == 'D') { // Replace 'BD' with 'B'
 						buf [bufCount] = (byte)'B';
 						j++;
 					} else {									// Anything else 
-						buf [bufCount] = temp [j];
+						buf [bufCount] = buffer [j];
 					}
 				} 
-				bufCount++;										// Compressing readBuf to actual size buf
+				bufCount++;										
 			}
-			return (bufCount-1);										
+			return (bufReadSize);										
 		}
 	}
 }
