@@ -3,12 +3,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProductVersion>10.0.0</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{74B158F5-42EC-46A9-9AC7-E205635B23E9}</ProjectGuid>
+    <ProjectGuid>{14AE9C4E-C5DF-497D-BC61-52B2FA11CC3F}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>file_server</RootNamespace>
-    <AssemblyName>file_server</AssemblyName>
+    <RootNamespace>sender_projek</RootNamespace>
+    <AssemblyName>sender_projek</AssemblyName>
+    <ProductVersion>12.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -18,24 +18,31 @@
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
     <Externalconsole>true</Externalconsole>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <DebugType>none</DebugType>
+    <DebugType>full</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
     <Externalconsole>true</Externalconsole>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="Link">
+      <HintPath>..\..\..\øvelse13\øvelse13\Link\sender\bin\Debug\Link.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="file_server.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="link_sender.cs" />
+    <Compile Include="link_test.cs" />
+    <Compile Include="transport_sender.cs" />
+    <Compile Include="TransConst.cs" />
+    <Compile Include="Checksum.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

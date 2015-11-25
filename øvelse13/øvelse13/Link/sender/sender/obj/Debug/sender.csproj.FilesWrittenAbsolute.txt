@@ -1,7 +1,0 @@
-/root/i4ikn/I4IKN---gruppe-6/øvelse13/øvelse13/Link/sender/obj/Debug/.NETFramework,Version=v4.0.AssemblyAttribute.cs
-/root/i4ikn/I4IKN---gruppe-6/øvelse13/øvelse13/Link/sender/bin/Debug/sender.exe.mdb
-/root/i4ikn/I4IKN---gruppe-6/øvelse13/øvelse13/Link/sender/bin/Debug/sender.exe
-/root/i4ikn/I4IKN---gruppe-6/øvelse13/øvelse13/Link/sender/obj/Debug/sender.exe
-/root/i4ikn/I4IKN---gruppe-6/øvelse13/øvelse13/Link/sender/obj/Debug/sender.exe.mdb
-/root/i4ikn/I4IKN---gruppe-6/øvelse13/øvelse13/Link/sender/bin/Debug/Link.dll
-/root/i4ikn/I4IKN---gruppe-6/øvelse13/øvelse13/Link/sender/bin/Debug/Link.dll.mdb
