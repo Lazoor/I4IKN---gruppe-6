@@ -3,12 +3,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProjectGuid>{14AE9C4E-C5DF-497D-BC61-52B2FA11CC3F}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>sender_projek</RootNamespace>
-    <AssemblyName>sender_projek</AssemblyName>
-    <ProductVersion>12.0.0</ProductVersion>
+    <ProductVersion>10.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{DB485B50-5258-42F1-ABC9-2774EEE3360F}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>client</RootNamespace>
+    <AssemblyName>file_client</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -18,32 +18,41 @@
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Externalconsole>true</Externalconsole>
     <PlatformTarget>x86</PlatformTarget>
+    <Externalconsole>true</Externalconsole>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <DebugType>full</DebugType>
+    <DebugType>none</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Externalconsole>true</Externalconsole>
     <PlatformTarget>x86</PlatformTarget>
+    <Externalconsole>true</Externalconsole>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="Link">
-      <HintPath>..\..\..\øvelse13\øvelse13\Link\sender\bin\Debug\Link.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="link_sender.cs" />
-    <Compile Include="link_test.cs" />
-    <Compile Include="TransConst.cs" />
-    <Compile Include="Checksum.cs" />
-    <Compile Include="Transport.cs" />
-    <Compile Include="test_main.cs" />
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="file_client.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ProjectExtensions>
+    <MonoDevelop>
+      <Properties>
+        <Deployment.LinuxDeployData scriptName="file_client" />
+      </Properties>
+    </MonoDevelop>
+  </ProjectExtensions>
+  <ItemGroup>
+    <ProjectReference Include="..\LIB\LIB.csproj">
+      <Project>{D8DF9D64-4B60-4D4C-9782-733750DEA33B}</Project>
+      <Name>LIB</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Transport\Transport.csproj">
+      <Project>{981C1C09-64A7-47CD-A093-30083CCFFD03}</Project>
+      <Name>Transport</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>

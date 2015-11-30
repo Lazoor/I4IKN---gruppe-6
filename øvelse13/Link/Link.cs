@@ -12,7 +12,7 @@ namespace Linklaget
 		SerialPort serialPort;
 
 
-		public Link ()
+		public Link (int BUFSIZE)
 		{
 			// Create a new SerialPort object with default settings.
 			serialPort = new SerialPort("/dev/ttyS1",115200,Parity.None,8,StopBits.One);
@@ -20,7 +20,7 @@ namespace Linklaget
 			if(!serialPort.IsOpen)
 				serialPort.Open();
 
-			buffer = new byte[(MAXFILESIZE*2)+2];
+			buffer = new byte[(BUFSIZE*2)+2];
 		}
 
 		public void send (byte[] inputbuf, int size)
@@ -58,22 +58,37 @@ namespace Linklaget
 		{
 			// Total size counter
 			int bufReadSize = 0;
+			int byteRead = 0;
 			// i = temporary buffer iterator, bufCount = buf iterator
-			int i = 0, bufCount = 0;
+			int bufCount = 0;
+			bool exit = false;
 
 			// ################  DEBUG  OUTCOMMENT IF NEEDED ##############
 			Console.WriteLine ("Receive function started...");
 			//#############################################################
 
-			bufReadSize = serialPort.Read (buffer,i,MAXFILESIZE);
-			Console.WriteLine ("Buffer received (nothing done to it): " + Encoding.ASCII.GetString (buffer));
+			while (!exit){
+				byteRead = serialPort.ReadByte ();
 
-			for (int j = 1; j < bufReadSize-1; ++j) {			// Compressing readBuf to actual size buf
+				if (byteRead == (byte)'A' && bufReadSize > 1) {
+					exit = true;
+				} else if (byteRead < 0) {
+					exit = true;
+				} else {
+					buffer [bufReadSize] = (byte)byteRead;
+					bufReadSize++;
+				}
+			}
+			
+			//DEBUG ###############################
+			//Console.WriteLine ("Buffer received (nothing done to it): " + Encoding.ASCII.GetString (buffer));
+			//#################################
+			for (int j = 0; j < bufReadSize; j++){
 				if (j < bufReadSize) {
-					if (buffer [j] == 'B' && buffer [j+1] == 'C') {	// Replace 'BC' with 'A'
+					if (buffer[j] == (byte)'B' && buffer [j+1] == (byte)'C') {	// Replace 'BC' with 'A'
 						buf [bufCount] = (byte)'A';
 						j++;
-					} else if (buffer [j] == 'B' && buffer [j+1] == 'D') { // Replace 'BD' with 'B'
+					} else if (buffer [j] == (byte)'B' && buffer [j+1] == (byte)'D') { // Replace 'BD' with 'B'
 						buf [bufCount] = (byte)'B';
 						j++;
 					} else {									// Anything else 

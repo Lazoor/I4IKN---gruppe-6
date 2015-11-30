@@ -39,27 +39,27 @@ namespace Transportlaget
 			int size = link.receive(ref buf);
 			if (size != (int)TransSize.ACKSIZE) return false;
 			if(!checksum.checkChecksum(buf, (int)TransSize.ACKSIZE) ||
-					buf[(int)TransCHKSUM.SEQNO] != seqNo ||
-					buf[(int)TransCHKSUM.TYPE] != (int)TransType.ACK)
+			   buf[(int)TransCHKSUM.SEQNO] != seqNo ||
+			   buf[(int)TransCHKSUM.TYPE] != (int)TransType.ACK)
 				return false;
-			
-			seqNo = ([(int)TransCHKSUM.SEQNO] + 1) % 2;
-			
+
+			seqNo = (byte)((buf[(int)TransCHKSUM.SEQNO]+1)%2);
+
 			return true;
 		}
-			
+
 		// Sends the ack.
 		private void sendAck (bool ackType)
 		{
 			byte[] ackBuf = new byte[(int)TransSize.ACKSIZE];
 			ackBuf [(int)TransCHKSUM.SEQNO] = (byte)
-					(ackType ? (byte)(buffer (byte)buffer [(int)TransCHKSUM.SEQNO] : [(int)TransCHKSUM.SEQNO] + 1) % 2);
+				(ackType ? (byte)buffer [(int)TransCHKSUM.SEQNO] : (byte)(buffer [(int)TransCHKSUM.SEQNO] + 1) % 2);
 			ackBuf [(int)TransCHKSUM.TYPE] = (byte)(int)TransType.ACK;
 			checksum.calcChecksum (ref ackBuf, (int)TransSize.ACKSIZE);
 
 			link.send(ackBuf, (int)TransSize.ACKSIZE);
 		}
-			
+
 		// Send the specified buffer and size.
 		public void send(byte[] buf, int size)
 		{
@@ -80,20 +80,20 @@ namespace Transportlaget
 					}
 					bytesLeft -= bytesLeft;
 				}
-				
+
 				buffer[2] = seqNo;
 				buffer[3] = (byte)'0';
-				checksum.calcChecksum (buffer, size + 4);
-			
+				checksum.calcChecksum (ref buffer, size + 4);
+
 				link.send (buffer, buffer.Length);
-			
+
 				if (!receiveAck ()) {
 					Console.WriteLine ("Something went wrong, trying again!");
 					link.send (buffer, buffer.Length);
 				} 
 
 				Console.WriteLine ("Acknowledge received, continueing...");
-			
+
 			} 
 			Console.WriteLine("File sent!");
 
