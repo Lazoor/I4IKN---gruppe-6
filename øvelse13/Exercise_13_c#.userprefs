@@ -1,0 +1,16 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Transport/trans_test.cs">
+    <Files>
+      <File FileName="Transport/Transport.cs" Line="22" Column="39" />
+      <File FileName="Transport/Checksum.cs" Line="27" Column="4" />
+      <File FileName="Transport/trans_test.cs" Line="16" Column="27" />
+      <File FileName="Link/link_main.cs" Line="18" Column="20" />
+      <File FileName="Link/Link.cs" Line="8" Column="3" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

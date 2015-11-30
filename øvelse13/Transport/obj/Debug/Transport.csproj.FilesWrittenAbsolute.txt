@@ -1,0 +1,7 @@
+/root/i4ikn/I4IKN---gruppe-6/øvelse13/Transport/obj/Debug/.NETFramework,Version=v4.0.AssemblyAttribute.cs
+/root/i4ikn/I4IKN---gruppe-6/øvelse13/Transport/bin/Debug/Link.dll
+/root/i4ikn/I4IKN---gruppe-6/øvelse13/Transport/bin/Debug/Link.dll.mdb
+/root/i4ikn/I4IKN---gruppe-6/øvelse13/Transport/bin/Debug/Transport.dll.mdb
+/root/i4ikn/I4IKN---gruppe-6/øvelse13/Transport/bin/Debug/Transport.dll
+/root/i4ikn/I4IKN---gruppe-6/øvelse13/Transport/obj/Debug/Transport.dll
+/root/i4ikn/I4IKN---gruppe-6/øvelse13/Transport/obj/Debug/Transport.dll.mdb

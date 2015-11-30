@@ -2,6 +2,7 @@ using System;
 using Linklaget;
 using Transportlaget;
 using System.IO;
+using System.Text;
 
 namespace main
 {
@@ -9,15 +10,15 @@ namespace main
 	{
 		public test_main ()
 		{
-			Link myLink;
-			Transport myTrans;
+			int BUFSIZE = 1000;
+			Link myLink = new Link (BUFSIZE);
+			Transport myTrans = new Transport (BUFSIZE);
+			byte[] A = new byte[3];
+		
+			myTrans.receive (ref A);
 
-			byte A = new byte[3];
-			A[0] = (byte)'A';
-			A[1] = (byte)'B';
-			A[2] = (byte)'C';
-
-			myTrans.send (A, 3);
+			Console.WriteLine ("Output: ");
+			Console.WriteLine (A.ToString());
 		}
 	}
 }

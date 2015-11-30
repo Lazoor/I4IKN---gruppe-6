@@ -6,7 +6,6 @@ namespace Linklaget
 {
 	public class Link
 	{
-		const int MAXFILESIZE = 1000;
 		const byte DELIMITER = (byte)'A';
 		private byte[] buffer;
 		SerialPort serialPort;

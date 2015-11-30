@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using Linklaget;
+using System.Text;
 
 // Transportlaget
 namespace Transportlaget
@@ -19,7 +20,6 @@ namespace Transportlaget
 		private byte old_seqNo;
 		private int errorCount;
 		private const int DEFAULT_SEQNO = 2;
-		private const int BUFSIZE = 1000;
 
 		// Constructor
 		public Transport (int BUFSIZE)
@@ -63,41 +63,33 @@ namespace Transportlaget
 		// Send the specified buffer and size.
 		public void send(byte[] buf, int size)
 		{
-			int bytesRead = 0, bytesLeft = size;
+			int count = 0;
 			int errCount = 0;
 
-			while (bytesLeft != 0) {
-				if (bytesLeft > BUFSIZE) {
-					for (int i = 4; i <= BUFSIZE; i++) {
-						buffer [i] = buf [bytesRead];
-						bytesRead++;
-					}
-					bytesLeft -= BUFSIZE;
+			for (int i = 0; i <= size + 4; i++){
+				if (i < 4) {
+					buffer [i] = 0;
 				} else {
-					for (int i = 4; i <= bytesLeft; i++) {
-						buffer[i] = buf [bytesRead];
-						bytesRead++;
-					}
-					bytesLeft -= bytesLeft;
+					buffer [i] = buf [count];
 				}
+				count++;
+			}
+			buffer[2] = seqNo;
+			buffer[3] = (byte)'0';
 
-				buffer[2] = seqNo;
-				buffer[3] = (byte)'0';
-				checksum.calcChecksum (ref buffer, size + 4);
+			checksum.calcChecksum (ref buffer, size + 4);
 
+			link.send (buffer, buffer.Length);
+
+			while(!receiveAck ()) {
+				Console.WriteLine ("Something went wrong, trying again!");
 				link.send (buffer, buffer.Length);
-
-				if (!receiveAck ()) {
-					Console.WriteLine ("Something went wrong, trying again!");
-					link.send (buffer, buffer.Length);
-				} 
-
-				Console.WriteLine ("Acknowledge received, continueing...");
-
 			} 
-			Console.WriteLine("File sent!");
 
-		}
+			Console.WriteLine ("Acknowledge received, continueing...");
+
+			Console.WriteLine("File sent!");
+	}
 
 		// HER ER TESTEN TIL SEND..
 		/* 
@@ -118,7 +110,19 @@ while(!receiveAck())
 		// Receive the specified buffer.
 		public int receive (ref byte[] buf)
 		{
-			// TO DO Your own code
+			bool ackType = false;
+			link.receive (ref buffer);
+			int size = buffer.Length;
+
+			if (checksum.checkChecksum (buffer, size)) {
+				for (int i = 0; i <= size-4; i++) {
+					buf [i] = buffer[i+4];
+				} 
+				ackType = true;
+			}
+			sendAck (ackType);
+
+			return 0;
 		}
 	}
 }

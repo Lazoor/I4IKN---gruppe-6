@@ -38,6 +38,23 @@ namespace Application
 			// TO DO Your own code
 		}
 
+		/*
+while (bytesLeft != 0) {
+				if (bytesLeft > BUFSIZE) {
+					for (int i = 4; i <= BUFSIZE; i++) {
+						buffer [i] = buf [bytesRead];
+						bytesRead++;
+					}
+					bytesLeft -= BUFSIZE;
+				} else {
+					for (int i = 4; i <= bytesLeft; i++) {
+						buffer[i] = buf [bytesRead];
+						bytesRead++;
+					}
+					bytesLeft -= bytesLeft;
+				}
+		*/
+
 		/// <summary>
 		/// The entry point of the program, where the program control starts and ends.
 		/// </summary>
