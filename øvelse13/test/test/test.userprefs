@@ -1,0 +1,15 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="../Link/Link.cs">
+    <Files>
+      <File FileName="test/Program.cs" Line="30" Column="5" />
+      <File FileName="../Transport/trans_test.cs" Line="15" Column="48" />
+      <File FileName="../Transport/Transport.cs" Line="120" Column="20" />
+      <File FileName="../Link/Link.cs" Line="50" Column="16" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

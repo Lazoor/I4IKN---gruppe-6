@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Text;
 using Transportlaget;
-using Library;
+using Linklaget;
 
 namespace Application
 {
@@ -18,27 +18,32 @@ namespace Application
 		/// </summary>
 		private file_server ()
 		{
+			Link myLink = new Link (BUFSIZE);
 			Console.WriteLine ("Link object created.");
-			Console.WriteLine ("Input some text: ");
-			string input = Console.ReadLine ();
-			byte[] A = new byte[3];
-
-			// Filling up sendBuffer
-			A [0] = (byte)input[0];
-			A [1] = (byte)input[1];
-			A [2] = (byte)input[2];
-
-			myTrans.send (A, A.Length);
-
-			Console.WriteLine ("Output: ");
-			Console.WriteLine (A.ToString());
-		}
-
-		private void sendFile(String fileName, long fileSize, Transport transport)
-		{
 			Transport myTrans = new Transport (BUFSIZE);
 			Console.WriteLine ("Transport object created.");
+
+			while (true) {
+				Console.WriteLine ("Input some text: ");
+				string input = Console.ReadLine ();
+				byte[] A = new byte[3];
+
+				// Filling up sendBuffer
+				A [0] = (byte)input [0];
+				A [1] = (byte)input [1];
+				A [2] = (byte)input [2];
+
+				myTrans.send (A, A.Length);
+
+				Console.WriteLine ("Output: ");
+				Console.WriteLine (A.ToString ());
+			}
 		}
+
+		//private void sendFile(String fileName, long fileSize, Transport transport)
+		//{
+
+		//}
 
 		/*
 while (bytesLeft != 0) {
