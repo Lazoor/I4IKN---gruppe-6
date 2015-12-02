@@ -63,20 +63,21 @@ namespace Transportlaget
 		// Send the specified buffer and size.
 		public void send(byte[] buf, int size)
 		{
-			int count = 0;
-
-			for (int i = 0; i <= size + 4; i++){
-				if (i < 4) {
-					buffer [i] = 0;
+			int tempCount = 0;
+			int j;
+			for (j=0; j < size+4; j++){ // THIS MIGHT BE A PROBLEM
+				if (j < 4) {
+					buffer [j] = 0;
 				} else {
-					buffer [i] = buf [count];
+					buffer [j] = buf [tempCount];
+					tempCount = tempCount+1;
 				}
-				count++;
 			}
+
 			buffer[2] = seqNo;
 			buffer[3] = (byte)'0';
 
-			checksum.calcChecksum (ref buffer, size + 4);
+			checksum.calcChecksum (ref buffer, buffer.Length);
 
 			link.send (buffer, buffer.Length);
 

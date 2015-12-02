@@ -24,6 +24,7 @@ namespace Linklaget
 
 		public void send (byte[] inputbuf, int size)
 		{
+			Array.Clear (buffer, 0, buffer.Length);
 			int tempCount = 1;
 
 			for (int i=0; i < size; ++i) {
@@ -41,12 +42,11 @@ namespace Linklaget
 				} 
 			}
 			buffer [0] = DELIMITER;
-			tempCount++;
 			buffer [tempCount] = DELIMITER;
 			tempCount++;
 			//#####################################################
 
-			buffer [tempCount+1] = (byte)'\r';	// DEBUGGING REASONS TO READ ON TTYS1
+			//buffer [tempCount+1] = (byte)'\r';	// DEBUGGING REASONS TO READ ON TTYS1
 			//#######################################################
 
 			serialPort.Write (buffer, 0, tempCount);
@@ -55,6 +55,7 @@ namespace Linklaget
 
 		public int receive (ref byte[] buf)
 		{
+			Array.Clear (buffer, 0, buffer.Length);
 			// Total size counter
 			int bufReadSize = 0;
 			int byteRead = 0;
@@ -78,11 +79,11 @@ namespace Linklaget
 					bufReadSize++;
 				}
 			}
-			
+
 			//DEBUG ###############################
 			//Console.WriteLine ("Buffer received (nothing done to it): " + Encoding.ASCII.GetString (buffer));
 			//#################################
-			for (int j = 0; j < bufReadSize; j++){
+			for (int j = 1; j < bufReadSize; j++){
 				if (j < bufReadSize) {
 					if (buffer[j] == (byte)'B' && buffer [j+1] == (byte)'C') {	// Replace 'BC' with 'A'
 						buf [bufCount] = (byte)'A';
@@ -96,7 +97,7 @@ namespace Linklaget
 				} 
 				bufCount++;										
 			}
-			return (bufReadSize);										
+			return (bufCount);										
 		}
 	}
 }

@@ -46,8 +46,8 @@ namespace Linklaget
 			tempCount++;
 			//#####################################################
 
-			buffer [tempCount+1] = (byte)'\r';	// DEBUGGING REASONS TO READ ON TTYS1
-			tempCount++;
+			//buffer [tempCount+1] = (byte)'\r';	// DEBUGGING REASONS TO READ ON TTYS1
+			//tempCount++;
 			//#######################################################
 
 			serialPort.Write (buffer, 0, tempCount);

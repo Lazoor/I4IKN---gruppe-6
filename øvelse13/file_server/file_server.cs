@@ -20,24 +20,28 @@ namespace Application
 		{
 			Console.WriteLine ("Link object created.");
 			Console.WriteLine ("Input some text: ");
-			string input = Console.ReadLine ();
+			Console.ReadLine ();
+			Transport myTrans = new Transport (BUFSIZE);
 			byte[] A = new byte[3];
 
 			// Filling up sendBuffer
-			A [0] = (byte)input[0];
-			A [1] = (byte)input[1];
-			A [2] = (byte)input[2];
+			A [0] = (byte)'A';
+			A [1] = (byte)'B';
+			A [2] = (byte)'C';
 
-			myTrans.send (A, A.Length);
+			for (int i = 0; i < 10; i++) {
+				myTrans.send (A, A.Length);
+				Console.WriteLine ("Output: ");
+				Console.WriteLine (Encoding.ASCII.GetString(A));
+			}
 
-			Console.WriteLine ("Output: ");
-			Console.WriteLine (A.ToString());
+
 		}
 
 		private void sendFile(String fileName, long fileSize, Transport transport)
 		{
-			Transport myTrans = new Transport (BUFSIZE);
-			Console.WriteLine ("Transport object created.");
+			/*Transport myTrans = new Transport (BUFSIZE);
+			Console.WriteLine ("Transport object created.");*/
 		}
 
 		/*

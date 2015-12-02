@@ -1,49 +1,33 @@
 using System;
+using Linklaget;
+using Transportlaget;
 using System.IO;
 using System.Text;
-using Transportlaget;
-using Linklaget;
 
-namespace Application
+namespace main
 {
-	class file_server
+	public class test_main
 	{
-		/// <summary>
-		/// The BUFSIZE
-		/// </summary>
-		private const int BUFSIZE = 1000;
-
-		/// <summary>
-		/// Initializes a new instance of the <see cref="file_server"/> class.
-		/// </summary>
-		private file_server ()
+		public test_main ()
 		{
-			Link myLink = new Link (BUFSIZE);
-			Console.WriteLine ("Link object created.");
+			int BUFSIZE = 1000;
 			Transport myTrans = new Transport (BUFSIZE);
-			Console.WriteLine ("Transport object created.");
+		
+			Console.WriteLine ("Write some letters. ");
+			string test = Console.ReadLine ();
+			int length = test.Length;
+			Console.Write (test, test.Length);
+			byte[] A = new byte[3];
 
-			while (true) {
-				Console.WriteLine ("Input some text: ");
-				string input = Console.ReadLine ();
-				byte[] A = new byte[3];
-
-				// Filling up sendBuffer
-				A [0] = (byte)input [0];
-				A [1] = (byte)input [1];
-				A [2] = (byte)input [2];
-
-				myTrans.send (A, A.Length);
-
-				Console.WriteLine ("Output: ");
-				Console.WriteLine (A.ToString ());
+			for (int i = 0; i < 3; i++) {
+				A [i] = (byte)'A';
 			}
+
+			myTrans.send (A,A.Length);
+
+			Console.WriteLine ("Output: ");
+			Console.WriteLine (A.ToString());
 		}
-
-		//private void sendFile(String fileName, long fileSize, Transport transport)
-		//{
-
-		//}
 
 		/*
 while (bytesLeft != 0) {
@@ -62,15 +46,9 @@ while (bytesLeft != 0) {
 				}
 		*/
 
-		/// <summary>
-		/// The entry point of the program, where the program control starts and ends.
-		/// </summary>
-		/// <param name='args'>
-		/// The command-line arguments.
-		/// </param>
 		public static void Main (string[] args)
 		{
-			new file_server();
+			new test_main ();
 		}
 	}
 }

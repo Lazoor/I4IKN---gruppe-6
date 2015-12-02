@@ -38,11 +38,14 @@ namespace Transportlaget
 			byte[] buf = new byte[(int)TransSize.ACKSIZE];
 			int size = link.receive(ref buf);
 			if (size != (int)TransSize.ACKSIZE) return false;
-			if(!checksum.checkChecksum(buf, (int)TransSize.ACKSIZE) ||
-			   buf[(int)TransCHKSUM.SEQNO] != seqNo ||
-			   buf[(int)TransCHKSUM.TYPE] != (int)TransType.ACK)
+			if (!checksum.checkChecksum (buf, (int)TransSize.ACKSIZE) ||
+				buf [(int)TransCHKSUM.SEQNO] != seqNo ||
+				buf [(int)TransCHKSUM.TYPE] != (int)TransType.ACK) {
+				// MY OWN CODE
+				Console.WriteLine ("Nack received, trying again..");
+				// #############
 				return false;
-
+			}
 			seqNo = (byte)((buf[(int)TransCHKSUM.SEQNO]+1)%2);
 
 			return true;
@@ -63,62 +66,69 @@ namespace Transportlaget
 		// Send the specified buffer and size.
 		public void send(byte[] buf, int size)
 		{
+
 			int count = 0;
-			int errCount = 0;
 
-			for (int i = 0; i <= size + 4; i++){
-				if (i < 4) {
-					buffer [i] = 0;
-				} else {
-					buffer [i] = buf [count];
+				for (int i = 0; i <= size + 3; i++) {
+					if (i < 4) {
+						buffer [i] = 0;
+					} else {
+						buffer [i] = buf [count];
+						count++;
+					}
+
 				}
-				count++;
-			}
-			buffer[2] = seqNo;
-			buffer[3] = (byte)'0';
+				buffer [2] = seqNo;
+				buffer [3] = (byte)0;
 
-			checksum.calcChecksum (ref buffer, size + 4);
-
-			link.send (buffer, buffer.Length);
-
-			while(!receiveAck ()) {
-				Console.WriteLine ("Something went wrong, trying again!");
+				checksum.calcChecksum (ref buffer, size + 4);
+// HER ER TESTEN TIL SEND..
+			do {
+				errorCount++;
+				if (errorCount == 5) {
+					buffer [0]++;
+				}
 				link.send (buffer, buffer.Length);
-			} 
+				if (errorCount == 5) {
+					buffer [0]--;
+				}
+				Console.ReadKey();
+			} while(!receiveAck());
+				
 
+			
+			
+/*
+			link.send (buffer, size+4);
+
+			bool result = receiveAck ();
+			while(!result) {
+				Console.WriteLine ("Something went wrong, trying again!");
+				link.send (buffer, size+4);
+				result = receiveAck ();
+			} 
+*/
+		
 			Console.WriteLine ("Acknowledge received, continueing...");
 
-			Console.WriteLine("File sent!");
-	}
-
-		// HER ER TESTEN TIL SEND..
-		/* 
-
-do {
-errorCount++;
-if (errorCount == 5){
-	buffer[0]++;
-}
-link.send(buffer,buffer.Length);
-if (errorCount == 5){
-	buffer[0]--;
-}
-while(!receiveAck())
-
-		*/
+			Console.WriteLine ("File sent!");
+		}
 
 		// Receive the specified buffer.
 		public int receive (ref byte[] buf)
 		{
 			bool ackType = false;
-			link.receive (ref buffer);
-			int size = buffer.Length;
+			int size = link.receive (ref buffer);
 
 			if (checksum.checkChecksum (buffer, size)) {
-				for (int i = 0; i <= size-4; i++) {
-					buf [i] = buffer[i+4];
+				Console.WriteLine("Checksum was okay!");
+				Console.WriteLine("Sending Ack");
+				for (int i = 0; i < size - 4; i++) {
+					buf [i] = buffer [i + 4];
 				} 
 				ackType = true;
+			} else {
+				Console.WriteLine("Sending Nack");
 			}
 			sendAck (ackType);
 
