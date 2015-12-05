@@ -42,7 +42,7 @@ namespace Transportlaget
 				buf [(int)TransCHKSUM.SEQNO] != seqNo ||
 				buf [(int)TransCHKSUM.TYPE] != (int)TransType.ACK) {
 				// MY OWN CODE
-				Console.WriteLine ("Nack received, trying again..");
+				Console.WriteLine ("[Transport] Nack received, trying again..");
 				// #############
 				return false;
 			}
@@ -78,10 +78,18 @@ namespace Transportlaget
 					}
 
 				}
+
+			if (buffer [4] == (byte)0) {
+				buffer [2] = seqNo;
+				buffer [3] = (byte)1;
+			} else {
 				buffer [2] = seqNo;
 				buffer [3] = (byte)0;
+			}
 
 				checksum.calcChecksum (ref buffer, size + 4);
+			string testStr = Encoding.ASCII.GetString (buffer);
+			Console.WriteLine ("[Transport] " + testStr);
 // HER ER TESTEN TIL SEND..
 			/*do {
 				errorCount++;
@@ -110,10 +118,8 @@ namespace Transportlaget
 				result = receiveAck ();
 			} 
 */
-		
-			Console.WriteLine ("Acknowledge received, continueing...");
 
-			Console.WriteLine ("File sent!");
+			Console.WriteLine ("[Transport] File sent!");
 		}
 
 		// Receive the specified buffer.
@@ -122,18 +128,24 @@ namespace Transportlaget
 			bool ackType = false;
 			int size = link.receive (ref buffer);
 
+			string BufReceived = Encoding.ASCII.GetString (buffer);
+			Console.WriteLine ("[Transport] " + BufReceived);
+
 			if (checksum.checkChecksum (buffer, size)) {
-				Console.WriteLine("Checksum was okay!");
-				Console.WriteLine("Sending Ack");
+				Console.WriteLine("[Transport] Checksum was okay!");
 				for (int i = 0; i < size - 4; i++) {
 					buf [i] = buffer [i + 4];
 				} 
 				ackType = true;
-			} else {
-				Console.WriteLine("Sending Nack");
-			}
-			sendAck (ackType);
-
+			} else if (buffer[3] == (byte)0){
+				if (ackType == false) {
+					Console.WriteLine ("[Transport] Sending Nack!");
+					sendAck (ackType);
+				} else {
+					Console.WriteLine ("[Transport] Sending Ack!");
+					sendAck (ackType);
+				}
+			} 
 			return 0;
 		}
 	}

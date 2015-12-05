@@ -27,6 +27,9 @@ namespace Linklaget
 			Array.Clear (buffer, 0, buffer.Length);
 			int tempCount = 1;
 
+			string testStr = Encoding.ASCII.GetString (inputbuf);
+			Console.WriteLine ("[Link] Send method received: " + inputbuf);
+
 			for (int i=0; i < size; ++i) {
 				if (inputbuf [i] == (byte)'A') {
 					buffer [tempCount] = (byte)'B';
@@ -44,6 +47,9 @@ namespace Linklaget
 			buffer [0] = DELIMITER;
 			buffer [tempCount] = DELIMITER;
 			tempCount++;
+
+			testStr = Encoding.ASCII.GetString (buffer);
+			Console.WriteLine ("[Link] Sending: " + testStr);
 			//#####################################################
 
 			//buffer [tempCount+1] = (byte)'\r';	// DEBUGGING REASONS TO READ ON TTYS1
@@ -64,7 +70,7 @@ namespace Linklaget
 			bool exit = false;
 
 			// ################  DEBUG  OUTCOMMENT IF NEEDED ##############
-			Console.WriteLine ("Receive function started...");
+			Console.WriteLine ("[Link] Receive started.");
 			//#############################################################
 
 			while (!exit){
@@ -79,6 +85,9 @@ namespace Linklaget
 					bufReadSize++;
 				}
 			}
+
+			string testStr = Encoding.ASCII.GetString (buffer);
+			Console.WriteLine ("[Link] Received from /dev/ttyS1: " + testStr);
 
 			//DEBUG ###############################
 			//Console.WriteLine ("Buffer received (nothing done to it): " + Encoding.ASCII.GetString (buffer));
@@ -97,7 +106,9 @@ namespace Linklaget
 				} 
 				bufCount++;										
 			}
-			return (bufCount);										
+			testStr = Encoding.ASCII.GetString (buf);
+			Console.WriteLine ("[Link] Translated: " + testStr);
+			return (bufCount);
 		}
 	}
 }

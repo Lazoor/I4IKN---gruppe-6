@@ -17,35 +17,38 @@ namespace Application
 		{
 			receiveBuffer = new byte[BUFSIZE];
 			myTrans = new Transport (BUFSIZE);
-			Console.WriteLine ("File_server started.");
-			Console.WriteLine ("Transport object created.");
+			Console.WriteLine ("[FileServer] Server started.");
+			Console.WriteLine ("[FileServer] Transport object created.");
 
 			while (true) {
 
-				Console.WriteLine ("Waiting to receive filename.");
+				Console.WriteLine ("[FileServer] Waiting to receive filename.");
 
 				myTrans.receive (ref receiveBuffer);
+				char[] file;
+				string filepath;
+				string fileName;
 
-				string fileName, filepath;
+				file = Encoding.ASCII.GetChars(receiveBuffer);
 
-				filepath = Encoding.ASCII.GetString (receiveBuffer);
 				fileName = LIB.extractFileName (filepath);
 
-				Console.WriteLine ("Filename received: ");
-				Console.WriteLine (fileName);
+				Console.WriteLine ("[FileServer] Filename received: ");
+				Console.WriteLine (file);
 				Console.WriteLine (filepath);
 
 				long fileSize;
 
+				fileSize = LIB.check_File_Exists (filepath);
 				fileSize = LIB.check_File_Exists (fileName);
 
 				if (fileSize != 0) {
-					Console.WriteLine ("Sending file!");
-					sendFile (fileName, fileSize, myTrans);
+					Console.WriteLine ("[FileServer] Sending file!");
+					sendFile (filepath, fileSize, myTrans);
 				} else {
-					Console.WriteLine ("Something wrong.");
+					Console.WriteLine ("[FileServer] Failed to open file: " + filepath);
 				}
-				Console.WriteLine ("Starting over...");
+				Console.WriteLine ("[FileServer] Starting over.");
 			}
 		}
 
@@ -60,6 +63,7 @@ namespace Application
 
 				if (LIB.check_File_Exists (fileName) != 0) {
 					FileStream file = File.OpenRead (fileName);
+					Console.WriteLine ("[FileServer] Opened file: " + fileName);
 
 					while (bytesLeft > 0) {
 						if (bytesLeft > BUFSIZE) {
@@ -72,12 +76,12 @@ namespace Application
 							bytesLeft -= bytesLeft;
 						}
 					}
-					Console.WriteLine (" >> Fil er sendt!\n");
+					Console.WriteLine ("[FileServer] File sent.");
 				} else {
 					string fail = "0";
 					Console.Write (fail);
-					sendFile (fail, fail.Length, myTrans);
-					Console.WriteLine ("File doesn't exist.");
+					myTrans.send (fail, fail.Length);
+					Console.WriteLine ("[FileServer] File doesn't exist.");
 				}
 			}
 		}

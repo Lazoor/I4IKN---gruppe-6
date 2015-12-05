@@ -26,6 +26,10 @@ namespace Application
 				Console.WriteLine ("Write filepath...");
 				string fileName = Console.ReadLine ();
 
+				myTrans.send (fileName, fileName.Length);
+
+				if 
+
 				receiveFile (fileName, myTrans);
 
 				Console.WriteLine ("File Received! \n Starting over...");

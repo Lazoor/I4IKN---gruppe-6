@@ -1,4 +1,4 @@
-/*using System;
+using System;
 using Linklaget;
 using System.Text;
 
@@ -8,7 +8,7 @@ namespace sender
 	{
 		public static int Main (string[] args)
 		{
-			Link zelda = new Link();
+			Link zelda = new Link(1000);
 
 			Console.WriteLine ("Write somehting...");
 			string read = Console.ReadLine ();
@@ -23,4 +23,3 @@ namespace sender
 		}
 	}
 }
-*/
