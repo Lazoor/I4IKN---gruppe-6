@@ -11,7 +11,7 @@ namespace Application
 		private Transport myTrans;
 		private const int BUFSIZE = 1000;
 		private byte[] Buffer;
-		private const string clientPath= "/root/i4ikn/I4IKN---gruppe-6/ovelse13/file_client/received/";
+		private const string clientPath= "/root/Documents/I4IKN---gruppe-6/ovelse13/file_client/";
 
 		/// Initializes a new instance of the <see cref="file_server"/> class.
 		/// </summary>
@@ -21,7 +21,7 @@ namespace Application
 			myTrans = new Transport (BUFSIZE);
 			Console.WriteLine ("[Client] Client_server started.");
 			Console.WriteLine ("[Client] Transport object created.");
-			string filePath = "/root/i4ikn/I4IKN/ovelse13/file_server/bin/Debug/hey.txt";
+			string filePath = "/root/Documents/I4IKN---gruppe-6/ovelse13/file_server/bin/Debug/hey.txt";
 			while (true) {
 				nextTry:
 					//Console.WriteLine ("[Client] Input filepath on serverside...");
@@ -56,7 +56,7 @@ namespace Application
 			byte[] fileMan = new byte[length];
 			fileMan = Encoding.ASCII.GetBytes (filePath);
 
-			myTrans.send (fileMan, length);
+			myTrans.send (fileMan, fileMan.Length);
 
 			Array.Clear (fileMan, 0, fileMan.Length);
 
@@ -64,21 +64,21 @@ namespace Application
 			int fileSize = BitConverter.ToInt32 (Buffer,0);
 			int bytesReceived = 0;
 			int bytesLeft = fileSize;
-			int bytesSent = 0;
-			FileStream file = File.OpenWrite(altPath);
+			int bytesWriten = 0;
+			FileStream file =  new FileStream(altPath, FileMode.Create, FileAccess.ReadWrite);
 
 			while (bytesLeft > 0) {
 				Array.Clear (Buffer, 0, Buffer.Length);
 				myTrans.receive (ref Buffer);
 				string test = Encoding.ASCII.GetString (Buffer);
 				Console.WriteLine ("[Client] Writing:" + test);
-
 				bytesReceived += Buffer.Length;
-				file.Write (Buffer, bytesSent, bytesReceived); 
-				bytesSent += bytesReceived;
+				file.Write (Buffer, bytesWriten, bytesReceived); 
+				bytesWriten += bytesReceived;
 				bytesLeft -= bytesReceived;
 
 			}
+			file.Close ();
 			Console.WriteLine ("File is received!");
 		}
 

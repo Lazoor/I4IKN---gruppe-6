@@ -24,7 +24,7 @@ namespace Application
 			while (true) {
 				bool failFlag = false;
 				Console.WriteLine ("[FileServer] Waiting to receive filename.");
-			
+
 				myTrans.receive (ref receiveBuffer);
 
 

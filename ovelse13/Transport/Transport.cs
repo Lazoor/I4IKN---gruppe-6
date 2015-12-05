@@ -69,7 +69,7 @@ namespace Transportlaget
 			Array.Clear (buffer, 0, buffer.Length);
 			int count = 0;
 
-				for (int i = 0; i < size + 3; i++) {
+				for (int i = 0; i <= size + 3; i++) {
 					if (i < 4) {
 						buffer [i] = 0;
 					} else {
