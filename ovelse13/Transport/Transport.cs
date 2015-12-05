@@ -66,10 +66,10 @@ namespace Transportlaget
 		// Send the specified buffer and size.
 		public void send(byte[] buf, int size)
 		{
-
+			Array.Clear (buffer, 0, buffer.Length);
 			int count = 0;
 
-				for (int i = 0; i <= size + 3; i++) {
+				for (int i = 0; i < size + 3; i++) {
 					if (i < 4) {
 						buffer [i] = 0;
 					} else {
@@ -125,6 +125,7 @@ namespace Transportlaget
 		// Receive the specified buffer.
 		public int receive (ref byte[] buf)
 		{
+			Array.Clear (buffer, 0, buffer.Length);
 			bool ackType = false;
 			int size = link.receive (ref buffer);
 

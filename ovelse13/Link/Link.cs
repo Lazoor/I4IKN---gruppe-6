@@ -86,7 +86,14 @@ namespace Linklaget
 				}
 			}
 
-			string testStr = Encoding.ASCII.GetString (buffer);
+			byte[] temp = new byte[bufReadSize];
+
+			for (int i = 0; i < bufReadSize; i++) {
+				temp [i] = buffer [i];
+			}
+
+
+			string testStr = Encoding.ASCII.GetString (temp);
 			Console.WriteLine ("[Link] Received from /dev/ttyS1: " + testStr);
 
 			//DEBUG ###############################
@@ -94,14 +101,14 @@ namespace Linklaget
 			//#################################
 			for (int j = 1; j < bufReadSize; j++){
 				if (j < bufReadSize) {
-					if (buffer[j] == (byte)'B' && buffer [j+1] == (byte)'C') {	// Replace 'BC' with 'A'
+					if (temp[j] == (byte)'B' && temp [j+1] == (byte)'C') {	// Replace 'BC' with 'A'
 						buf [bufCount] = (byte)'A';
 						j++;
-					} else if (buffer [j] == (byte)'B' && buffer [j+1] == (byte)'D') { // Replace 'BD' with 'B'
+					} else if (buffer [j] == (byte)'B' && temp [j+1] == (byte)'D') { // Replace 'BD' with 'B'
 						buf [bufCount] = (byte)'B';
 						j++;
 					} else {									// Anything else 
-						buf [bufCount] = buffer [j];
+						buf [bufCount] = temp [j];
 					}
 				} 
 				bufCount++;										

@@ -15,38 +15,45 @@ namespace Application
 		/// </summary>
 		private file_server ()
 		{
+
 			receiveBuffer = new byte[BUFSIZE];
 			myTrans = new Transport (BUFSIZE);
 			Console.WriteLine ("[FileServer] Server started.");
 			Console.WriteLine ("[FileServer] Transport object created.");
 
 			while (true) {
-
+				bool failFlag = false;
 				Console.WriteLine ("[FileServer] Waiting to receive filename.");
-
+			
 				myTrans.receive (ref receiveBuffer);
-				char[] file;
-				string filepath;
-				string fileName;
 
-				file = Encoding.ASCII.GetChars(receiveBuffer);
 
-				fileName = LIB.extractFileName (filepath);
+				if (failFlag == false) {
+					string temp = Encoding.ASCII.GetString(receiveBuffer);
+					string filepath = "";
 
-				Console.WriteLine ("[FileServer] Filename received: ");
-				Console.WriteLine (file);
-				Console.WriteLine (filepath);
+					for (int i = 0; i < temp.Length; i++) {
+						char ch = temp[i];
+						if (ch != '\0') {
+							filepath += ch;
+						}
+					}
 
-				long fileSize;
+					Console.WriteLine ("[FileServer] Filepath received: ");
+					Console.WriteLine (filepath);
 
-				fileSize = LIB.check_File_Exists (filepath);
-				fileSize = LIB.check_File_Exists (fileName);
+					long fileSize;
 
-				if (fileSize != 0) {
-					Console.WriteLine ("[FileServer] Sending file!");
-					sendFile (filepath, fileSize, myTrans);
-				} else {
-					Console.WriteLine ("[FileServer] Failed to open file: " + filepath);
+					fileSize = LIB.check_File_Exists (filepath);
+
+					if (fileSize > 0) {
+						Console.WriteLine ("[FileServer] Sending file!");
+						sendFile (filepath, fileSize, myTrans);
+					} else {
+						receiveBuffer = BitConverter.GetBytes(fileSize);
+						myTrans.send (receiveBuffer, receiveBuffer.Length);
+						Console.WriteLine ("[FileServer] File doesn't exist.");
+					}
 				}
 				Console.WriteLine ("[FileServer] Starting over.");
 			}
@@ -56,33 +63,31 @@ namespace Application
 		{
 			if (fileSize > 0) {
 
-				int bytesSent = BUFSIZE;
+				int bytesSent = 0;
 				int bytesRead = 0;
 				int bytesLeft = Convert.ToInt32 (fileSize);
 				byte[] dataArray = new byte[BUFSIZE];
+				byte[] fileSizeByte = new byte[10];
 
-				if (LIB.check_File_Exists (fileName) != 0) {
-					FileStream file = File.OpenRead (fileName);
-					Console.WriteLine ("[FileServer] Opened file: " + fileName);
+				FileStream file = File.OpenRead (fileName);
+				Console.WriteLine ("[FileServer] Opened file: " + fileName);
 
-					while (bytesLeft > 0) {
-						if (bytesLeft > BUFSIZE) {
-							bytesRead = file.Read (dataArray, bytesRead, BUFSIZE);
-							myTrans.send (dataArray, bytesRead);
-							bytesLeft -= bytesSent;
-						} else {
-							file.Read (dataArray, bytesRead, bytesLeft);
-							myTrans.send (dataArray, bytesLeft);
-							bytesLeft -= bytesLeft;
-						}
+				fileSizeByte = BitConverter.GetBytes(fileSize);
+				myTrans.send (fileSizeByte, fileSizeByte.Length);
+
+				while (bytesLeft > 0) {
+					if (bytesLeft > BUFSIZE) {
+						bytesRead += file.Read (dataArray, bytesSent, BUFSIZE);
+						myTrans.send (dataArray, bytesRead);
+						bytesLeft -= bytesRead;
+						bytesSent += bytesRead;
+					} else {
+						bytesRead += file.Read (dataArray, bytesRead, bytesLeft);	// EXEPTION POPS HERE???
+						myTrans.send (dataArray, bytesRead);
+						bytesLeft -= bytesLeft;
 					}
-					Console.WriteLine ("[FileServer] File sent.");
-				} else {
-					string fail = "0";
-					Console.Write (fail);
-					myTrans.send (fail, fail.Length);
-					Console.WriteLine ("[FileServer] File doesn't exist.");
 				}
+				Console.WriteLine ("[FileServer] File sent.");
 			}
 		}
 
